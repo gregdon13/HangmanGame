@@ -6,22 +6,22 @@ package rocks.zipcode;
 
 public class RanWord  {
 
-    public char[] ranWordFromListChars () {
+    public String[] ranWordFromListChars () {
         String[] randomWords = {"pin", "help", "split", "stumpy"};
         Integer randInt = getRandomNumber(0, randomWords.length);
         String randStr = randomWords[randInt];
-        char[] charArrStr = randStr.toCharArray();
+        String[] charArrStr = randStr.split("");
         return charArrStr;
     }
     public int getRandomNumber(int min, int max) {
         return (int) ((Math.random() * (max - min)) + min);
     }
 
-    public char[] makeDashDisplay() {
-        char[] dashes = ranWordFromListChars();
+    public String makeDashDisplay() {
+        String[] dashes = ranWordFromListChars();
         for (int i = 0; i < dashes.length; i++) {
-            dashes[i] = '-';
+            dashes[i] = " - ";
         }
-        return dashes;
+        return dashes.toString();
     }
 }
