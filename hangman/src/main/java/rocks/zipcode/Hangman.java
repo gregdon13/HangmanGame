@@ -7,12 +7,10 @@ import java.util.Random;
 public class Hangman {
 
     public void main(String[] args) {
-        Hangman game = new Hangman();
+        HangmanGame game = new HangmanGame();
         game.runGame();
     }
 
-    public void runGame() {
-    }
 
 }
 
@@ -34,6 +32,7 @@ public class Hangman {
     }
 
     //creates char[] of random string from String[]
+    // Move
     public char[] ranWordFromListChars () {
         String[] randomWords = {"pin", "help", "split", "stumpy"};
         Integer randInt = Math.random() * ((randomWords.length) - 0 + 1) + 0;
