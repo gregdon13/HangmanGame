@@ -5,6 +5,20 @@ import java.util.Random;
 
 // Gregory Donnelly
 public class Hangman {
+
+    public void main(String[] args) {
+        Hangman game = new Hangman();
+        game.runGame();
+    }
+
+    public void runGame() {
+    }
+
+}
+
+
+/*
+    //creates char[] placeholder of dashes equal to length of ranWordFromListChars()
     public char[] userPlaceholderDashes () {
         char[] dashes = [ranWordFromListChars().length];
         for (int i = 0; i < dashes.length; i++) {
@@ -12,6 +26,14 @@ public class Hangman {
         }
         return dashes;
     }
+
+    // Creates an integer for starting number of guesses player has
+    public Integer numOfGuesses() {
+        Integer guesses = ranWordFromListChars().length;
+        return guesses;
+    }
+
+    //creates char[] of random string from String[]
     public char[] ranWordFromListChars () {
         String[] randomWords = {"pin", "help", "split", "stumpy"};
         Integer randInt = Math.random() * ((randomWords.length) - 0 + 1) + 0;
@@ -21,4 +43,4 @@ public class Hangman {
         System.out.println(charArrStr);
         return charArrStr;
     }
-}
+*/
