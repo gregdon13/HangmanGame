@@ -1,9 +1,8 @@
 package rocks.zipcode;
 
-import java.util.Locale;
-import java.util.Objects;
-import java.util.Scanner;
-import java.util.Random;
+import sun.lwawt.macosx.CSystemTray;
+
+import java.util.*;
 
 //Gregory Donnelly
 public class Hangman {
@@ -13,12 +12,14 @@ public class Hangman {
     String wordStr = wordBank[randomInteger()];
     char[] wordStrArr = wordStr.toCharArray();
     char[] dashesArr = dashMaker(wordStrArr);
-    boolean letterPresent = isLetterHere(userInput);
+    Integer numOfTries = wordStrArr.length * 2;
+    boolean letterPresent = isLetterHere(userGuess);
     boolean continueGame = stillWantToPlay();
 
+    //if user wants to still play
     private boolean stillWantToPlay() {
         boolean stillPlaying = true;
-        if (userInput.equals("-")) {
+        if (userGuess.equals("-")) {
             stillPlaying = false;
             System.out.println("Goodbye");
         }
@@ -30,30 +31,71 @@ public class Hangman {
         game.runGame();
     }
 
+    //running games
     private void runGame() {
+        String[] gameUI = Display.gameDisplay(wordStrArr, numOfTries);
         while (continueGame) {
-            System.out.println(Display.gameDisplay());
-        }
-    }
-
-    private boolean isLetterHere(Scanner userInput) {
-        boolean present = false;
-        for (int i = 0; i < wordStrArr.length; i++) {
-            if (Objects.equals(wordStrArr[i], userInput)) {
-                present = true;
+            Arrays.stream(gameUI).forEach(System.out::println);
+            if (letterPresent) {
+                replaceDash(wordStrArr, dashesArr);
+            }
+            numOfTries--;
+            if (wordGuessed()) {
+                System.out.println(Display.winningScreen());
+            } else if (numOfTries == 0) {
+                System.out.println(Display.losingScreen());
             }
         }
-        return present;
+        System.out.println(Display.playAgain());
+        if (userGuess.equalsIgnoreCase("Y")) {
+            runGame();
+        } else if (userGuess.equalsIgnoreCase("N")) {
+            System.out.println("Goodbye");
+        } else {
+            System.out.println("Invalid");
+            System.out.println(Display.playAgain());
+        }
     }
 
+    //turns dash in dash array to matching letter of word
+    private void replaceDash(char[] word, char[] dashes) {
+        for (int i = 0; i < dashes.length; i++) {
+            dashes[i] = word[i];
+        }
+    }
+
+    //has word been guessed
+    private boolean wordGuessed() {
+        boolean isWordDone = false;
+        for (int i = 0; i < dashesArr.length; i++) {
+            if (dashesArr[i] == wordStrArr[i]) {
+                isWordDone = true;
+            } else {
+                return isWordDone;
+            }
+        }
+        return isWordDone;
+    }
+
+    //check if guess is present in array
+    private boolean isLetterHere(String userInput) {
+        char[] charInput = userInput.toCharArray();
+        for (int i = 0; i < wordStrArr.length; i++) {
+            if (wordStrArr[i] == charInput[0]) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //makes dash array
     private char[] dashMaker(char[] wordStrArr) {
         char[] dashArrMade = wordStrArr;
-        for (int i = 0; i < wordStrArr.length; i++) {
-            wordStrArr[i] = '-';
-        }
+        Arrays.fill(wordStrArr, '-');
         return dashArrMade;
     }
 
+    //creates random int
     private int randomInteger() {
         int integer = (int) (Math.random() * wordBank.length);
         return integer;
