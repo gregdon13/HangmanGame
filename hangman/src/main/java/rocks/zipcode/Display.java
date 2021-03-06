@@ -22,4 +22,8 @@ public class Display extends Hangman {
     public static String playAgain() {
         return "Would you like to try again? Y or N";
     }
+
+    public static String startupScreen() {
+        return "Would you like to play a game? Y or N";
+    }
 }

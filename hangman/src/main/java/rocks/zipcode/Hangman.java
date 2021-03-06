@@ -15,6 +15,7 @@ public class Hangman {
     Integer numOfTries = wordStrArr.length * 2;
     boolean letterPresent = isLetterHere(userGuess);
     boolean continueGame = stillWantToPlay();
+    Integer indexOfDashToReplace = 0;
 
     //if user wants to still play
     private boolean stillWantToPlay() {
@@ -33,11 +34,22 @@ public class Hangman {
 
     //running games
     private void runGame() {
+        String welcomeScreen = Display.startupScreen();
         String[] gameUI = Display.gameDisplay(wordStrArr, numOfTries);
+
+        System.out.println(welcomeScreen);
+        if (userGuess.equalsIgnoreCase("Y")) {
+            stillWantToPlay();
+        } else if (userGuess.equalsIgnoreCase("N")) {
+            continueGame = false;
+        } else {
+            System.out.println("Invalid");
+            System.out.println(welcomeScreen);
+        }
         while (continueGame) {
             Arrays.stream(gameUI).forEach(System.out::println);
             if (letterPresent) {
-                replaceDash(wordStrArr, dashesArr);
+                replaceDash(wordStrArr, dashesArr, indexOfDashToReplace);
             }
             numOfTries--;
             if (wordGuessed()) {
@@ -58,10 +70,8 @@ public class Hangman {
     }
 
     //turns dash in dash array to matching letter of word
-    private void replaceDash(char[] word, char[] dashes) {
-        for (int i = 0; i < dashes.length; i++) {
-            dashes[i] = word[i];
-        }
+    private void replaceDash(char[] word, char[] dashes, int index) {
+        dashes[index] = word[index];
     }
 
     //has word been guessed
@@ -71,7 +81,7 @@ public class Hangman {
             if (dashesArr[i] == wordStrArr[i]) {
                 isWordDone = true;
             } else {
-                return isWordDone;
+                return false;
             }
         }
         return isWordDone;
@@ -82,6 +92,7 @@ public class Hangman {
         char[] charInput = userInput.toCharArray();
         for (int i = 0; i < wordStrArr.length; i++) {
             if (wordStrArr[i] == charInput[0]) {
+                indexOfDashToReplace = i;
                 return true;
             }
         }
